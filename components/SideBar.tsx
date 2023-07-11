@@ -2,10 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
-import { HiHome, HiSearch } from "react-icons/hi";
+import { HiHome } from "react-icons/hi";
+import { BiSearch } from "react-icons/bi";
 
 import Box from "./Box";
 import SideBarItem from "./SideBarItem";
+import Library from "./Library";
 
 interface Props {
   children: React.ReactNode;
@@ -24,7 +26,7 @@ const SideBar: React.FC<Props> = ({ children }: Props) => {
         href: "/",
       },
       {
-        icon: HiSearch,
+        icon: BiSearch,
         label: "Search",
         active: pathName === searchPath,
         href: searchPath,
@@ -43,8 +45,11 @@ const SideBar: React.FC<Props> = ({ children }: Props) => {
             ))}
           </div>
         </Box>
-        <Box className="overflow-y-auto h-full">Song Library</Box>
+        <Box className="overflow-y-auto h-full">
+          <Library />
+        </Box>
       </div>
+      <main className="h-full flex-1 overflow-y-auto py-2">{children}</main>
     </div>
   );
 };

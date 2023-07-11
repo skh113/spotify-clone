@@ -1,3 +1,4 @@
+import { IconSize } from "@/styles/style";
 import Link from "next/link";
 import React from "react";
 import { IconType } from "react-icons/lib";
@@ -24,7 +25,7 @@ const SideBarItem: React.FC<Props> = ({
         active && "text-white"
       )}
     >
-      <Icon size={26} />
+      <Icon size={IconSize.Default} />
       <p className="truncate w-100">{label}</p>
     </Link>
   );
