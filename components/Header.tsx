@@ -13,6 +13,7 @@ import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { FaUserAlt } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 interface Props {
   children: React.ReactNode;
@@ -32,7 +33,8 @@ const Header: React.FC<Props> = ({ children, className }) => {
     // TODO: reset any playing songs
     router.refresh();
 
-    if (error) console.log(error);
+    if (error) toast.error(error.message);
+    else toast.success("Logged Out");
   };
 
   return (
