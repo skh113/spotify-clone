@@ -1,12 +1,14 @@
 "use client";
 
+import { IconSize, buttonStyle, mobileButtonStyle } from "@/styles/style";
+import useAuthModal from "@/hooks/useAuthModal";
+import Button from "./Button";
+
 import { useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
-import { IconSize, buttonStyle, mobileButtonStyle } from "@/styles/style";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
-import Button from "./Button";
 
 interface Props {
   children: React.ReactNode;
@@ -14,7 +16,9 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({ children, className }) => {
+  const authModal = useAuthModal();
   const router = useRouter();
+
   const handleLogout = () => {
     //
   };
@@ -55,14 +59,14 @@ const Header: React.FC<Props> = ({ children, className }) => {
           <>
             <div>
               <Button
-                onClick={() => {}}
+                onClick={authModal.onOpen}
                 className="bg-transparent text-neutral-300 font-medium"
               >
                 Sign up
               </Button>
             </div>
             <div>
-              <Button onClick={() => {}} className="bg-white px-6 py-2">
+              <Button onClick={authModal.onOpen} className="bg-white px-6 py-2">
                 Log in
               </Button>
             </div>
