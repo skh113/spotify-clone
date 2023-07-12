@@ -1,3 +1,4 @@
+import { IconSize } from "@/styles/style";
 import * as Dialog from "@radix-ui/react-dialog";
 import { IoMdClose } from "react-icons/io";
 
@@ -30,7 +31,7 @@ const Modal: React.FC<Props> = ({
           <div>{children}</div>
           <Dialog.Close asChild>
             <button className="text-neutral-400 hover:text-white absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:outline-none">
-              <IoMdClose />
+              <IoMdClose size={IconSize.Small} />
             </button>
           </Dialog.Close>
         </Dialog.Content>
