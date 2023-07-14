@@ -4,6 +4,7 @@ import useLoadImage from "@/hooks/useLoadImage";
 import { Song } from "@/types";
 
 import Image from "next/image";
+import PlayButton from "./PlayButton";
 
 interface Props {
   data: Song;
@@ -26,11 +27,14 @@ const SongItem: React.FC<Props> = ({ data, onClick }) => {
           alt={data.title}
         />
       </div>
-      <div className="flex flex-col items-start w-full p-4 gap-y-1">
+      <div className="flex flex-col items-start w-full pt-4 gap-y-1">
         <p className="font-semibold truncate w-full">{data.title}</p>
-        <p className="tex-neutral-400 text-sm pb-4 w-fill truncate">
+        <p className="text-neutral-400 text-sm pb-4 w-fill truncate">
           By {data.author}
         </p>
+      </div>
+      <div className="absolute bottom-24 right-5">
+        <PlayButton />
       </div>
     </div>
   );
