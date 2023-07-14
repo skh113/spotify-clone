@@ -6,7 +6,7 @@ import ModalProvider from "@/providers/ModalProvider";
 import ToasterProvider from "@/providers/ToasterProvider";
 
 import { Figtree } from "next/font/google";
-import getSongsByUserID from "@/actions/getSongsByUserId";
+import getSongsByUserID from "@/actions/getSongsByUserID";
 
 const font = Figtree({ subsets: ["latin"] });
 
