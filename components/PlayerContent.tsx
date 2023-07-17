@@ -10,7 +10,8 @@ import Slider from "./Slider";
 import usePlayer from "@/hooks/usePlayer";
 
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useSound from "use-sound";
 
 interface Props {
   song: Song;
@@ -20,7 +21,7 @@ interface Props {
 const PlayerContent: React.FC<Props> = ({ song, songUrl }) => {
   const player = usePlayer();
   const [volume, setVolume] = useState(1);
-  const [isPlaying, setPlaying] = useState(true);
+  const [isPlaying, setPlaying] = useState(false);
 
   const onPlayNext = () => {
     if (player.IDs.length === 0) return;
@@ -42,6 +43,35 @@ const PlayerContent: React.FC<Props> = ({ song, songUrl }) => {
     player.setID(previousSong);
   };
 
+  const [play, { pause, sound }] = useSound(songUrl, {
+    volume: volume,
+    onplay: () => setPlaying(true),
+    onend: () => {
+      setPlaying(false);
+      onPlayNext();
+    },
+    onpause: () => setPlaying(false),
+    format: ["mp3"],
+  });
+
+  useEffect(() => {
+    sound?.play();
+
+    return () => {
+      sound?.unload();
+    };
+  }, [sound]);
+
+  const handlePlay = () => {
+    if (!isPlaying) play();
+    else pause();
+  };
+
+  const toggleMute = () => {
+    if (volume === 0) setVolume(1);
+    else setVolume(0);
+  };
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div className="flex w-full justify-start">
@@ -53,7 +83,7 @@ const PlayerContent: React.FC<Props> = ({ song, songUrl }) => {
       <div className="flex md:hidden col-auto w-full justify-end items-center">
         <div
           className="h-10 w-10 flex items-center justify-center rounded-full bg-white p-1 cursor-pointer"
-          onClick={() => {}}
+          onClick={handlePlay}
         >
           <PlayIcon isPlayed={isPlaying} />
         </div>
@@ -67,7 +97,7 @@ const PlayerContent: React.FC<Props> = ({ song, songUrl }) => {
         />
         <div
           className="flex items-center justify-center h-10 w-10 rounded-full bg-white p-1 cursor-pointer"
-          onClick={() => {}}
+          onClick={handlePlay}
         >
           <PlayIcon isPlayed={isPlaying} />
         </div>
@@ -79,8 +109,8 @@ const PlayerContent: React.FC<Props> = ({ song, songUrl }) => {
       </div>
       <div className="hidden md:flex w-full justify-end pr-2">
         <div className="flex items-center gap-x-2 w-[120px]">
-          <VolumeIcon onClick={() => {}} isMute={volume === 0} />
-          <Slider />
+          <VolumeIcon onClick={toggleMute} isMute={volume === 0} />
+          <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
       </div>
     </div>
