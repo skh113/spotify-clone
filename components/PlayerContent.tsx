@@ -3,12 +3,14 @@
 import { Song } from "@/types";
 import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
-
-import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import PlayIcon from "./PlayIcon";
 import { IconSize } from "@/styles/style";
 import VolumeIcon from "./VolumeIcon";
 import Slider from "./Slider";
+import usePlayer from "@/hooks/usePlayer";
+
+import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
+import { useState } from "react";
 
 interface Props {
   song: Song;
@@ -16,6 +18,30 @@ interface Props {
 }
 
 const PlayerContent: React.FC<Props> = ({ song, songUrl }) => {
+  const player = usePlayer();
+  const [volume, setVolume] = useState(1);
+  const [isPlaying, setPlaying] = useState(true);
+
+  const onPlayNext = () => {
+    if (player.IDs.length === 0) return;
+
+    const currentIndex = player.IDs.findIndex((id) => id === player.activeID);
+    const nextSong = player.IDs[currentIndex + 1];
+
+    if (!nextSong) return player.setID(player.IDs[0]);
+    player.setID(nextSong);
+  };
+
+  const onPlayPrevious = () => {
+    if (player.IDs.length === 0) return;
+
+    const currentIndex = player.IDs.findIndex((id) => id === player.activeID);
+    const previousSong = player.IDs[currentIndex - 1];
+
+    if (!previousSong) return player.setID(player.IDs[player.IDs.length - 1]);
+    player.setID(previousSong);
+  };
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div className="flex w-full justify-start">
@@ -29,7 +55,7 @@ const PlayerContent: React.FC<Props> = ({ song, songUrl }) => {
           className="h-10 w-10 flex items-center justify-center rounded-full bg-white p-1 cursor-pointer"
           onClick={() => {}}
         >
-          <PlayIcon isPlayed={true} />
+          <PlayIcon isPlayed={isPlaying} />
         </div>
       </div>
 
@@ -37,23 +63,23 @@ const PlayerContent: React.FC<Props> = ({ song, songUrl }) => {
         <AiFillStepBackward
           size={IconSize.Default}
           className="cursor-pointer text-neutral-400 hover:text-white transition"
-          onClick={() => {}}
+          onClick={onPlayPrevious}
         />
         <div
           className="flex items-center justify-center h-10 w-10 rounded-full bg-white p-1 cursor-pointer"
           onClick={() => {}}
         >
-          <PlayIcon isPlayed={true} />
+          <PlayIcon isPlayed={isPlaying} />
         </div>
         <AiFillStepForward
           size={IconSize.Default}
           className="cursor-pointer text-neutral-400 hover:text-white transition"
-          onClick={() => {}}
+          onClick={onPlayNext}
         />
       </div>
       <div className="hidden md:flex w-full justify-end pr-2">
         <div className="flex items-center gap-x-2 w-[120px]">
-          <VolumeIcon onClick={() => {}} isMute={false} />
+          <VolumeIcon onClick={() => {}} isMute={volume === 0} />
           <Slider />
         </div>
       </div>
